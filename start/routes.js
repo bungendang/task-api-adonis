@@ -19,3 +19,12 @@ const Route = use('Route')
 Route.get('/', () => {
   return { greeting: 'Hello world in JSON' }
 })
+
+// task router
+Route.get('/tasks', 'TaskController.lists')
+Route.get('/task/:id', 'TaskController.view')
+Route.put('/task/:id', 'TaskController.edit')
+Route.delete('/task/:id', 'TaskController.delete')
+Route.post('/task', 'TaskController.post')
+
+// user router
