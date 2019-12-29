@@ -22,9 +22,10 @@ Route.get('/', () => {
 
 // task router
 Route.get('/tasks', 'TaskController.lists')
-Route.get('/task/:id', 'TaskController.view')
-Route.put('/task/:id', 'TaskController.edit')
-Route.delete('/task/:id', 'TaskController.delete')
 Route.post('/task', 'TaskController.post')
+Route.get('/task/:id', 'TaskController.viewById')
+Route.put('/task/:id', 'TaskController.editById')
+Route.delete('/task/:id', 'TaskController.deleteById')
+Route.post('/task/assign/:id', 'TaskController.assignToUserId')
 
 // user router
