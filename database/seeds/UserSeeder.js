@@ -2,7 +2,7 @@
 
 /*
 |--------------------------------------------------------------------------
-| TaskSeeder
+| UserSeeder
 |--------------------------------------------------------------------------
 |
 | Make use of the Factory instance to seed database with dummy data or
@@ -13,12 +13,12 @@
 /** @type {import('@adonisjs/lucid/src/Factory')} */
 const Factory = use('Factory')
 
-class TaskSeeder {
+class UserSeeder {
   async run () {
-    const taskArray = await Factory
-      .model('App/Models/Task')
-      .createMany(20)
+    const userArray = await Factory
+      .model('App/Models/User')
+      .createMany(3)
   }
 }
 
-module.exports = TaskSeeder
+module.exports = UserSeeder

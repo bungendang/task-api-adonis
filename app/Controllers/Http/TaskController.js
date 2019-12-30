@@ -1,9 +1,22 @@
 'use strict'
+const Task = use('App/Models/Task')
+const User = use('App/Models/User')
 
 class TaskController {
     async lists({request, response}){
 		var list = await Task.all()
 		response.json({results: list})
+    }
+    async viewById({params, request, response}){
+		var task = await Task.query().where('id',params.id).first()
+		if (task) {
+			response.json({results: task})
+		} else {
+			response.status(404).json({
+				status: 'error',
+				message: 'task with id '+params.id+' not found!'
+			})
+		}
 	}
 	async editById({params, request, response}){
 		// console.log(params)
@@ -31,18 +44,7 @@ class TaskController {
 			})
 		}
 	}
-	async viewById({params, request, response}){
-		var task = await Task.query().where('id',params.id).first()
-		if (task) {
-			response.json({results: task})
-		} else {
-			response.status(404).json({
-				status: 'error',
-				message: 'task with id '+params.id+' not found!'
-			})
-		}
-
-	}
+	
 	async post({params, request, response}){
 		const body = request.post()
 
@@ -52,7 +54,7 @@ class TaskController {
 			description: body.description
 		}
 
-		const taskId = await Task.create(body)
+		const taskId = await Task.create(data)
 		if (taskId) {
 			response.json(taskId)
 		} else {
@@ -75,16 +77,41 @@ class TaskController {
 		}
 	}
 	async assignToUserId({params, request, response}){
-		console.log(body)
-		var task = await Task.query().where('id',params.id).first()
-		response.json({results: task})
+        const body = request.post()
+        console.log(body)
+        var task = await Task.query().where('id',params.id).first()
+
+        if (task) {
+            var newUser = await this.updateUser(body.user_id, task.user)
+            task.user = JSON.stringify(newUser)
+            task.save()
+            response.json({results: newUser})            
+        } else {
+            response.status(404).json({status: "error", message: "task with id "+params.id+" not found"})
+        }
 	}
 
 
-	updateUser(id, data){
-		//update json array text on table * push to array *
-		console.log("update user")
-		return ""
+	async updateUser(id, data){
+        //update json array text on table * push to array *
+        var userAssign = []
+        var user = await User.find(id)
+        if (user) {
+            if (data && data.length > 0) {
+                userAssign = JSON.parse(data)
+            }
+            // masih belum filter if user assign / unassign
+            userAssign.push({
+                id: user.id,
+                full_name: user.full_name,
+                email: user.email,
+                username: user.username
+            })
+        } else {
+            // kasih data semula karena user not found
+            userAssign = JSON.parse(data)
+        }
+		return userAssign
 	}
 }
 

@@ -21,11 +21,19 @@ Route.get('/', () => {
 })
 
 // task router
-Route.get('/tasks', 'TaskController.lists')
+Route.get('/tasks', 'TaskController.lists').middleware('auth')
 Route.post('/task', 'TaskController.post')
 Route.get('/task/:id', 'TaskController.viewById')
 Route.put('/task/:id', 'TaskController.editById')
 Route.delete('/task/:id', 'TaskController.deleteById')
-Route.post('/task/assign/:id', 'TaskController.assignToUserId')
+Route.put('/task/assign/:id', 'TaskController.assignToUserId')
 
 // user router
+Route.get('/users', 'UserController.lists')
+Route.get('/user/:id', 'UserController.viewById')
+Route.put('/user/:id', 'UserController.editById')
+
+
+// security router
+Route.post('/login', 'SecurityController.login')
+Route.post('/register', 'SecurityController.register')
