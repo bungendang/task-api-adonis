@@ -5,7 +5,8 @@ const Hash = use('Hash')
 class SecurityController {
     async login ({ auth, request }) {
         const { email, password } = request.all()
-        await auth.attempt(email, await Hash.make(password))
+        // console.log(password)
+        await auth.attempt(email, password)
     
         return 'Logged in successfully'
     }

@@ -15,6 +15,7 @@ const Factory = use('Factory')
 
 class UserSeeder {
   async run () {
+    // faker user
     const userArray = await Factory
       .model('App/Models/User')
       .createMany(3)
