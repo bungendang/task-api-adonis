@@ -6,7 +6,7 @@ class SecurityController {
     async login ({ auth, request }) {
         const { email, password } = request.all()
         // console.log(password)
-        await auth.attempt(email, password)
+        await auth.attempt(email, await Hash.make(password))
     
         return 'Logged in successfully'
     }
